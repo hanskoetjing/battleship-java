@@ -35,13 +35,15 @@ public class Main {
         console.println(" \\_________________________________________________________________________|");
         console.println("");
         console.clear();
-
+        console.println("cobacobasaja");
         InitializeGame();
 
         StartGame();
     }
 
     private static void StartGame() {
+    	int numOfMyShips = myFleet.size();
+    	int numOfEnemyShips = enemyFleet.size();
         Scanner scanner = new Scanner(System.in);
 
         console.print("\033[2J\033[;H");
@@ -63,6 +65,7 @@ public class Main {
             Position position = parsePosition(scanner.next());
             boolean isHit = GameController.checkIsHit(enemyFleet, position);
             if (isHit) {
+            	numOfEnemyShips--;
                 beep();
 
                 console.println("                \\         .  ./");
@@ -82,6 +85,7 @@ public class Main {
             console.println("");
             console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(), isHit ? "hit your ship !" : "miss"));
             if (isHit) {
+            	numOfMyShips--;
                 beep();
 
                 console.println("                \\         .  ./");
@@ -93,6 +97,16 @@ public class Main {
                 console.println("                 -\\  \\     /  /-");
                 console.println("                   \\  \\   /  /");
 
+            }
+            if(numOfMyShips == 0 )
+            {
+            	console.println("You lost!");
+            	break;
+            }
+            if(numOfEnemyShips == 0)
+            {
+            	console.println("You are the winner!");
+            	break;
             }
         } while (true);
     }

@@ -23,7 +23,8 @@ public class GameController {
         for (Ship ship : ships) {
             for (Position position : ship.getPositions()) {
                 if (position.equals(shot)) {
-                    return true;
+                    ship.setBlown(true);
+                	return true;
                 }
             }
         }
@@ -51,4 +52,6 @@ public class GameController {
         Position position = new Position(letter, number);
         return position;
     }
+    
+    
 }

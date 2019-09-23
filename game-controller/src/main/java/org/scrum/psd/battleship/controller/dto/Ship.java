@@ -9,6 +9,7 @@ public class Ship {
     private int size;
     private List<Position> positions;
     private Color color;
+    private boolean isBlown;
 
     public Ship() {
         this.positions = new ArrayList<>();
@@ -19,6 +20,7 @@ public class Ship {
 
         this.name = name;
         this.size = size;
+        this.isBlown = false;
     }
 
     public Ship(String name, int size, List<Position> positions) {
@@ -84,5 +86,15 @@ public class Ship {
 
     public void setSize(int size) {
         this.size = size;
+    }
+    
+    public void setBlown(boolean isBlown)
+    {
+    	this.isBlown = isBlown;
+    }
+    
+    public boolean getBlown()
+    {
+    	return this.isBlown;
     }
 }
