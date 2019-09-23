@@ -32,6 +32,7 @@ public class Position {
 
         this.column = column;
         this.row = row;
+        this.isValid = true;
     }
 
     public Letter getColumn() {

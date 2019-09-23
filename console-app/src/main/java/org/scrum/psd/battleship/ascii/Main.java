@@ -128,13 +128,12 @@ public class Main {
     protected static Position parsePosition(String input) {
     	
     	Letter letter;
-    	int number;
+    	int number = Integer.parseInt(input.substring(1));
     	Position position = new Position();
-    	System.out.println(Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1)));
     	
-    	if (Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1))) {
+    	if (Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1)) && (number>=1 && number<=8)) {
     		letter = Letter.valueOf(input.toUpperCase().substring(0, 1));
-    	number = Integer.parseInt(input.substring(1));
+    		number = Integer.parseInt(input.substring(1));
     	position.setValid(true);
     		 
     	} else {
@@ -180,14 +179,15 @@ public class Main {
                 	boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
                     
                     if (isOverlaped) {
-                    	console.println(String.format("Coordinate is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
+                    	console.println(String.format("Coordinate "+positionInput+" is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
                     	i--;
                     }
                     else {
                     ship.addPosition(positionInput);
+                    console.println(String.format("Success add Coordinate "+positionInput));
                     }
                 }else {
-                	console.println(String.format("Coordinate is out of Field, Please Insert Another Coordinate..!!"));
+                	console.println(String.format("Coordinate "+positionInput+" is out of Field, Please Insert Another Coordinate..!!"));
                 	i--;
                 	
                 }
