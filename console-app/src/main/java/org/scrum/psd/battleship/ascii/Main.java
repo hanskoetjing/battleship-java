@@ -35,7 +35,7 @@ public class Main {
         console.println(" \\_________________________________________________________________________|");
         console.println("");
         console.clear();
-        console.println("cobacobasaja");
+
         InitializeGame();
 
         StartGame();
