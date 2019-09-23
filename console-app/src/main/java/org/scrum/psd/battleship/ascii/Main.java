@@ -3,6 +3,7 @@ package org.scrum.psd.battleship.ascii;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import org.scrum.psd.battleship.controller.GameController;
+import org.scrum.psd.battleship.controller.dto.HitStatus;
 import org.scrum.psd.battleship.controller.dto.Letter;
 import org.scrum.psd.battleship.controller.dto.Position;
 import org.scrum.psd.battleship.controller.dto.Ship;
@@ -57,12 +58,13 @@ public class Main {
         console.println("    \" \"\" \"\" \"\" \"");
 
         do {
+            /*PLAYER TURN*/
             console.println("");
             console.println("Player, it's your turn");
             console.println("Enter coordinates for your shot :");
             Position position = parsePosition(scanner.next());
-            boolean isHit = GameController.checkIsHit(enemyFleet, position);
-            if (isHit) {
+            HitStatus hitStatus = GameController.checkIsHit(enemyFleet, position);
+            if (hitStatus.isHit()) {
                 beep();
 
                 console.println("                \\         .  ./");
@@ -75,24 +77,31 @@ public class Main {
                 console.println("                   \\  \\   /  /");
             }
 
-            console.println(isHit ? "Yeah ! Nice hit !" : "Miss");
+           console.println(hitStatus.getDesc());
 
-            position = getRandomPosition();
-            isHit = GameController.checkIsHit(myFleet, position);
-            console.println("");
-            console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(), isHit ? "hit your ship !" : "miss"));
-            if (isHit) {
-                beep();
+            /*console.println(isHit ? "Yeah ! Nice hit !" : "Miss");*/
 
-                console.println("                \\         .  ./");
-                console.println("              \\      .:\" \";'.:..\" \"   /");
-                console.println("                  (M^^.^~~:.'\" \").");
-                console.println("            -   (/  .    . . \\ \\)  -");
-                console.println("               ((| :. ~ ^  :. .|))");
-                console.println("            -   (\\- |  \\ /  |  /)  -");
-                console.println("                 -\\  \\     /  /-");
-                console.println("                   \\  \\   /  /");
+            /*COMPUTER TURN*/
+            if (hitStatus.isTurnEnd()) {
+                position = getRandomPosition();
+                hitStatus = GameController.checkIsHit(myFleet, position);
+                console.println("");
+                console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(), hitStatus.isHit() ? "hit your ship !" : "miss"));
+                if (hitStatus.isHit()) {
+                    beep();
 
+                    console.println("                \\         .  ./");
+                    console.println("              \\      .:\" \";'.:..\" \"   /");
+                    console.println("                  (M^^.^~~:.'\" \").");
+                    console.println("            -   (/  .    . . \\ \\)  -");
+                    console.println("               ((| :. ~ ^  :. .|))");
+                    console.println("            -   (\\- |  \\ /  |  /)  -");
+                    console.println("                 -\\  \\     /  /-");
+                    console.println("                   \\  \\   /  /");
+
+                }
+            }  else {
+                console.println("Please try again...");
             }
         } while (true);
     }
@@ -139,6 +148,7 @@ public class Main {
                 ship.addPosition(positionInput);
             }
         }
+
     }
 
     private static void InitializeEnemyFleet() {

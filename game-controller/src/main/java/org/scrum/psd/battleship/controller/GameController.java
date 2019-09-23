@@ -1,9 +1,6 @@
 package org.scrum.psd.battleship.controller;
 
-import org.scrum.psd.battleship.controller.dto.Color;
-import org.scrum.psd.battleship.controller.dto.Letter;
-import org.scrum.psd.battleship.controller.dto.Position;
-import org.scrum.psd.battleship.controller.dto.Ship;
+import org.scrum.psd.battleship.controller.dto.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +8,14 @@ import java.util.List;
 import java.util.Random;
 
 public class GameController {
-    public static boolean checkIsHit(Collection<Ship> ships, Position shot) {
+    private static final int rowSize = 8;
+
+    public static HitStatus checkIsHit(Collection<Ship> ships, Position shot) {
+        /*INIT HIT STATUS*/
+        HitStatus hitStatus = new HitStatus();
+        hitStatus.setHit(false);
+        hitStatus.setTurnEnd(true);
+
         if (ships == null) {
             throw new IllegalArgumentException("ships is null");
         }
@@ -20,15 +24,26 @@ public class GameController {
             throw new IllegalArgumentException("shot is null");
         }
 
+        if (shot.getRow() < rowSize || shot.getRow() > rowSize || !Letter.isOnPlayingBoard(shot.getColumn().toString()) ) {
+            hitStatus.setHit(false);
+            hitStatus.setDesc("Miss. This posisiton is outside the playing field.");
+            hitStatus.setTurnEnd(false);
+            return hitStatus;
+        }
+
+
         for (Ship ship : ships) {
             for (Position position : ship.getPositions()) {
                 if (position.equals(shot)) {
-                    return true;
+                    hitStatus.setHit(true);
+                    hitStatus.setDesc("Yeah ! Nice hit !");
+                    hitStatus.setTurnEnd(true);
+                    return hitStatus;
                 }
             }
         }
 
-        return false;
+        return hitStatus;
     }
 
     public static List<Ship> initializeShips() {
