@@ -36,13 +36,15 @@ public class Main {
         console.println(" \\_________________________________________________________________________|");
         console.println("");
         console.clear();
-
+        console.println("cobacobasaja");
         InitializeGame();
 
         StartGame();
     }
 
     private static void StartGame() {
+    	int numOfMyShips = myFleet.size();
+    	int numOfEnemyShips = enemyFleet.size();
         Scanner scanner = new Scanner(System.in);
 
         console.print("\033[2J\033[;H");
@@ -63,8 +65,14 @@ public class Main {
             console.println("Player, it's your turn");
             console.println("Enter coordinates for your shot :");
             Position position = parsePosition(scanner.next());
+<<<<<<< HEAD
             HitStatus hitStatus = GameController.checkIsHit(enemyFleet, position);
             if (hitStatus.isHit()) {
+=======
+            boolean isHit = GameController.checkIsHit(enemyFleet, position);
+            if (isHit) {
+            	numOfEnemyShips--;
+>>>>>>> 4a8dcabb9faec869eca28507e1927e82b522ee68
                 beep();
 
                 console.println("                \\         .  ./");
@@ -77,6 +85,7 @@ public class Main {
                 console.println("                   \\  \\   /  /");
             }
 
+<<<<<<< HEAD
            console.println(hitStatus.getDesc());
 
             /*console.println(isHit ? "Yeah ! Nice hit !" : "Miss");*/
@@ -102,6 +111,37 @@ public class Main {
                 }
             }  else {
                 console.println("Please try again...");
+=======
+            console.println(isHit ? "Yeah ! Nice hit !" : "Miss");
+
+            position = getRandomPosition();
+            isHit = GameController.checkIsHit(myFleet, position);
+            console.println("");
+            console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(), isHit ? "hit your ship !" : "miss"));
+            if (isHit) {
+            	numOfMyShips--;
+                beep();
+
+                console.println("                \\         .  ./");
+                console.println("              \\      .:\" \";'.:..\" \"   /");
+                console.println("                  (M^^.^~~:.'\" \").");
+                console.println("            -   (/  .    . . \\ \\)  -");
+                console.println("               ((| :. ~ ^  :. .|))");
+                console.println("            -   (\\- |  \\ /  |  /)  -");
+                console.println("                 -\\  \\     /  /-");
+                console.println("                   \\  \\   /  /");
+
+>>>>>>> 4a8dcabb9faec869eca28507e1927e82b522ee68
+            }
+            if(numOfMyShips == 0 )
+            {
+            	console.println("You lost!");
+            	break;
+            }
+            if(numOfEnemyShips == 0)
+            {
+            	console.println("You are the winner!");
+            	break;
             }
         } while (true);
     }
