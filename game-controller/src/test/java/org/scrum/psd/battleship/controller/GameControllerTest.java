@@ -79,4 +79,71 @@ public class GameControllerTest {
         Assert.assertTrue(result);
     }
 
+    @Test
+    public void testGameEnd() {
+
+    }
+
+    @Test
+    public void testHitOutsidePlayingFieldPositive() {
+        List<Ship> ships = GameController.initializeShips();
+        
+        ships.get(0).getPositions().add(new Position(Letter.B, 4));
+        ships.get(0).getPositions().add(new Position(Letter.B, 5));
+        ships.get(0).getPositions().add(new Position(Letter.B, 6));
+        ships.get(0).getPositions().add(new Position(Letter.B, 7));
+        ships.get(0).getPositions().add(new Position(Letter.B, 8));
+
+        HitStatus hitStatus = GameController.checkIsHit(ships, new Position(Letter.H, 100));
+
+        Assert.assertEquals("Miss. This posisiton is outside the playing field.", hitStatus.getDesc());
+    }
+
+    @Test
+    public void testHitOutsidePlayingFieldNegative() {
+        List<Ship> ships = GameController.initializeShips();
+
+        ships.get(0).getPositions().add(new Position(Letter.B, 4));
+        ships.get(0).getPositions().add(new Position(Letter.B, 5));
+        ships.get(0).getPositions().add(new Position(Letter.B, 6));
+        ships.get(0).getPositions().add(new Position(Letter.B, 7));
+        ships.get(0).getPositions().add(new Position(Letter.B, 8));
+
+        HitStatus hitStatus = GameController.checkIsHit(ships, new Position(Letter.B, 8));
+
+        Assert.assertEquals("Yeah ! Nice hit !", hitStatus.getDesc());
+    }
+
+    @Test
+    public void testOverlapShipPositive() {
+
+        List<Ship> ships = GameController.initializeShips();
+
+        ships.get(0).getPositions().add(new Position(Letter.B, 4));
+        ships.get(0).getPositions().add(new Position(Letter.B, 5));
+        ships.get(0).getPositions().add(new Position(Letter.B, 6));
+        ships.get(0).getPositions().add(new Position(Letter.B, 7));
+        ships.get(0).getPositions().add(new Position(Letter.B, 8));
+
+        boolean isOverLap = GameController.checkIsOverlap(ships, new Position(Letter.B, 4));
+
+        Assert.assertEquals(true, isOverLap);
+    }
+
+    @Test
+    public void testOverlapShipNegative() {
+
+        List<Ship> ships = GameController.initializeShips();
+
+        ships.get(0).getPositions().add(new Position(Letter.B, 4));
+        ships.get(0).getPositions().add(new Position(Letter.B, 5));
+        ships.get(0).getPositions().add(new Position(Letter.B, 6));
+        ships.get(0).getPositions().add(new Position(Letter.B, 7));
+        ships.get(0).getPositions().add(new Position(Letter.B, 8));
+
+        boolean isOverLap = GameController.checkIsOverlap(ships, new Position(Letter.A, 8));
+
+        Assert.assertEquals(false, isOverLap);
+    }
+
 }

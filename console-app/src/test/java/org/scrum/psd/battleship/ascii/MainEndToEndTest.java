@@ -5,6 +5,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
+import org.scrum.psd.battleship.controller.dto.Position;
 
 import java.util.NoSuchElementException;
 
@@ -38,5 +39,19 @@ public class MainEndToEndTest {
             Assert.assertTrue(systemOutRule.getLog().contains("Welcome to Battleship"));
             Assert.assertTrue(systemOutRule.getLog().contains("Miss"));
         }
+    }
+
+    @Test
+    public void testInvalidPositionSetting() {
+        Position testPosition = Main.parsePosition("Z1");
+
+        Assert.assertFalse(testPosition.isValid());
+    }
+
+    @Test
+    public void testValidPositionSetting() {
+        Position testPosition = Main.parsePosition("H8");
+
+        Assert.assertTrue(testPosition.isValid());
     }
 }
