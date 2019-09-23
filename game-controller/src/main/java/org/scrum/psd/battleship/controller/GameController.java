@@ -71,5 +71,25 @@ public class GameController {
         return position;
     }
     
+   public static boolean checkIsOverlap(Collection<Ship> ships, Position coordinate) {
+            if (ships == null) {
+                throw new IllegalArgumentException("ships is null");
+            }
+
+            if (coordinate == null) {
+                throw new IllegalArgumentException("coordinate is null");
+            }
+
+            for (Ship ship : ships) {
+                for (Position position : ship.getPositions()) {
+                    if (position.equals(coordinate)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    
     
 }

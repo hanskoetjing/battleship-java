@@ -160,7 +160,16 @@ public class Main {
                 console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
 
                 String positionInput = scanner.next();
+                Position position = parsePosition(positionInput);
+                boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
+                
+                if (isOverlaped) {
+                	console.println(String.format("Coordinate is Overiding Another Ship, Please Select Another Coordinate..!!"));
+                	i--;
+                }
+                else {
                 ship.addPosition(positionInput);
+                }
             }
         }
 

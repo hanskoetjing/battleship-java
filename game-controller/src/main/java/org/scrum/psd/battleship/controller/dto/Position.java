@@ -3,8 +3,18 @@ package org.scrum.psd.battleship.controller.dto;
 public class Position {
     private Letter column;
     private int row;
+    
+    private boolean isOverlaped;
 
-    public Position() {
+    public boolean isOverlaped() {
+		return isOverlaped;
+	}
+
+	public void setOverlaped(boolean isOverlaped) {
+		this.isOverlaped = isOverlaped;
+	}
+
+	public Position() {
         super();
     }
 
