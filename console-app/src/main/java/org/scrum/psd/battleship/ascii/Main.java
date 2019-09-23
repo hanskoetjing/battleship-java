@@ -126,9 +126,24 @@ public class Main {
     }
 
     protected static Position parsePosition(String input) {
-        Letter letter = Letter.valueOf(input.toUpperCase().substring(0, 1));
-        int number = Integer.parseInt(input.substring(1));
-        return new Position(letter, number);
+    	
+    	Letter letter;
+    	int number;
+    	Position position = new Position();
+    	System.out.println(Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1)));
+    	
+    	if (Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1))) {
+    		letter = Letter.valueOf(input.toUpperCase().substring(0, 1));
+    	number = Integer.parseInt(input.substring(1));
+    	position.setValid(true);
+    		 
+    	} else {
+    		position.setValid(false);
+    	}
+    	
+    	return  position;
+        
+       
     }
 
     private static Position getRandomPosition() {
@@ -161,15 +176,22 @@ public class Main {
 
                 String positionInput = scanner.next();
                 Position position = parsePosition(positionInput);
-                boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
-                
-                if (isOverlaped) {
-                	console.println(String.format("Coordinate is Ovelapping Another Ship, Please Select Another Coordinate..!!"));
+                if (position.isValid()) {
+                	boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
+                    
+                    if (isOverlaped) {
+                    	console.println(String.format("Coordinate is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
+                    	i--;
+                    }
+                    else {
+                    ship.addPosition(positionInput);
+                    }
+                }else {
+                	console.println(String.format("Coordinate is out of Field, Please Insert Another Coordinate..!!"));
                 	i--;
+                	
                 }
-                else {
-                ship.addPosition(positionInput);
-                }
+                
             }
         }
 
