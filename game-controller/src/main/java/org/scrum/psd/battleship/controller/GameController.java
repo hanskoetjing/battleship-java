@@ -35,15 +35,12 @@ public class GameController {
         for (Ship ship : ships) {
             for (Position position : ship.getPositions()) {
                 if (position.equals(shot)) {
-<<<<<<< HEAD
+
                     hitStatus.setHit(true);
                     hitStatus.setDesc("Yeah ! Nice hit !");
                     hitStatus.setTurnEnd(true);
-                    return hitStatus;
-=======
                     ship.setBlown(true);
-                	return true;
->>>>>>> 4a8dcabb9faec869eca28507e1927e82b522ee68
+                    return hitStatus;
                 }
             }
         }
