@@ -45,6 +45,66 @@ public class Ship {
 
         positions.add(new Position(letter, number));
     }
+    
+    public List<Position> getCurrentPosition()
+    {
+    	return positions;
+    }
+    
+    public boolean isValidPosition(Position pos)
+    {
+    	boolean isTrue = true;
+    	if(positions == null)
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		if(positions.size() == 1)
+    		{
+    			Position firstPos = positions.get(0);
+    			Letter col = firstPos.getColumn();
+    	    	int row = firstPos.getRow();
+    			if((col.equals(pos.getColumn()) || row == pos.getRow()) && pos.getRow() - row == 1  && Letter.getNum(pos.getColumn().toString()) - Letter.getNum(col.toString()) == 1)
+    	    	{
+    	    		isTrue = true;
+    	    	}
+    	    	else
+    	    	{
+    	    		isTrue = false;
+    	    	}
+    		}
+    		else if(positions.size() >= 2)
+    		{
+    			char isColOrRow  = 'u';
+    			int lastPosIndex = positions.size() - 1;
+    			int twoLastPosIndex = positions.size() - 2;
+    			Position lastPos = positions.get(lastPosIndex);
+    			Position twoLastPos = positions.get(twoLastPosIndex);
+    			if(lastPos.getColumn() == twoLastPos.getColumn())
+    				isColOrRow = 'c';
+    			else
+    				isColOrRow = 'r';
+    			
+    			if(isColOrRow == 'c' && lastPos.getColumn() == pos.getColumn())
+    			{
+    				isTrue = true;
+    			}
+    			else if(isColOrRow == 'r' && lastPos.getRow() == pos.getRow())
+    			{
+    				isTrue = true;
+    			}
+    			else
+    			{
+    				isTrue = false;
+    			}
+    		}
+    		
+    	}
+	    
+    	
+    	return isTrue;
+    }
 
     // TODO: property change listener implementieren
 
