@@ -164,7 +164,7 @@ public class Main {
                 boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
                 
                 if (isOverlaped) {
-                	console.println(String.format("Coordinate is Overiding Another Ship, Please Select Another Coordinate..!!"));
+                	console.println(String.format("Coordinate is Ovelapping Another Ship, Please Select Another Coordinate..!!"));
                 	i--;
                 }
                 else {
