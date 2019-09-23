@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Random;
 
 public class GameController {
-    private static final int rowSize = 8;
+    private static final int maxRow = 8;
+    private static final int minRow = 1;
 
     public static HitStatus checkIsHit(Collection<Ship> ships, Position shot) {
         /*INIT HIT STATUS*/
         HitStatus hitStatus = new HitStatus();
         hitStatus.setHit(false);
+        hitStatus.setDesc("Miss!");
         hitStatus.setTurnEnd(true);
 
         if (ships == null) {
@@ -24,7 +26,7 @@ public class GameController {
             throw new IllegalArgumentException("shot is null");
         }
 
-        if (shot.getRow() < rowSize || shot.getRow() > rowSize || !Letter.isOnPlayingBoard(shot.getColumn().toString()) ) {
+        if (shot.getRow() < minRow || shot.getRow() > maxRow || !Letter.isOnPlayingBoard(shot.getColumn().toString()) ) {
             hitStatus.setHit(false);
             hitStatus.setDesc("Miss. This posisiton is outside the playing field.");
             hitStatus.setTurnEnd(false);
