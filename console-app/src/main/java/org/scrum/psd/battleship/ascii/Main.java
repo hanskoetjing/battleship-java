@@ -135,6 +135,8 @@ public class Main {
     		letter = Letter.valueOf(input.toUpperCase().substring(0, 1));
     		number = Integer.parseInt(input.substring(1));
     	position.setValid(true);
+    	position.setColumn(letter);
+    	position.setRow(number);
     		 
     	} else {
     		position.setValid(false);
