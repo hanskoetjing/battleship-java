@@ -81,6 +81,7 @@ public class Ship {
     			int twoLastPosIndex = positions.size() - 2;
     			Position lastPos = positions.get(lastPosIndex);
     			Position twoLastPos = positions.get(twoLastPosIndex);
+
     			if(lastPos.getColumn() == twoLastPos.getColumn())
     				isColOrRow = 'c';
     			else
@@ -88,10 +89,9 @@ public class Ship {
     			
     			if(isColOrRow == 'c' && lastPos.getColumn() == pos.getColumn() && pos.getRow() - lastPos.getRow() == 1) 
     			{
-    				
     				isTrue = true;
     			}
-    			else if(isColOrRow == 'r' && lastPos.getRow() == pos.getRow() && Letter.getNum(pos.getColumn().toString()) - Letter.getNum(lastPos.toString()) == 1)
+    			else if(isColOrRow == 'r' && lastPos.getRow() == pos.getRow() && Letter.getNum(pos.getColumn().toString()) - Letter.getNum(lastPos.getColumn().toString()) == 1)
     			{
     				isTrue = true;
     			}
