@@ -26,51 +26,50 @@ public class Main {
 	public static final String ANSI_CYAN = "\u001B[36m";
 	public static final String ANSI_WHITE = "\u001B[37m";
 
-	public static void main(String[] args) {
-		console = new ColoredPrinter.Builder(1, false).build();
+    public static void main(String[] args) {
+        console = new ColoredPrinter.Builder(1, false).build();
 
-		console.setForegroundColor(Ansi.FColor.MAGENTA);
-		console.println("                                     |__");
-		console.println("                                     |\\/");
-		console.println("                                     ---");
-		console.println("                                     / | [");
-		console.println("                              !      | |||");
-		console.println("                            _/|     _/|-++'");
-		console.println("                        +  +--|    |--|--|_ |-");
-		console.println("                     { /|__|  |/\\__|  |--- |||__/");
-		console.println("                    +---------------___[}-_===_.'____                 /\\");
-		console.println("                ____`-' ||___-{]_| _[}-  |     |_[___\\==--            \\/   _");
-		console.println(" __..._____--==/___]_|__|_____________________________[___\\==--____,------' .7");
-		console.println("|                        Welcome to Battleship                         BB-61/");
-		console.println(" \\_________________________________________________________________________|");
-		console.println("");
-		console.clear();
+        console.setForegroundColor(Ansi.FColor.MAGENTA);
+        console.println("                                     |__");
+        console.println("                                     |\\/");
+        console.println("                                     ---");
+        console.println("                                     / | [");
+        console.println("                              !      | |||");
+        console.println("                            _/|     _/|-++'");
+        console.println("                        +  +--|    |--|--|_ |-");
+        console.println("                     { /|__|  |/\\__|  |--- |||__/");
+        console.println("                    +---------------___[}-_===_.'____                 /\\");
+        console.println("                ____`-' ||___-{]_| _[}-  |     |_[___\\==--            \\/   _");
+        console.println(" __..._____--==/___]_|__|_____________________________[___\\==--____,------' .7");
+        console.println("|                        Welcome to Battleship                         BB-61/");
+        console.println(" \\_________________________________________________________________________|");
+        console.println("");
+        console.clear();
 
-		InitializeGame();
+        InitializeGame();
 
-		StartGame();
-	}
+        StartGame();
+    }
 
-	private static void StartGame() {
-		int numOfMyShips = myFleet.size();
-		int numOfEnemyShips = enemyFleet.size();
+    private static void StartGame() {
+    	int numOfMyShips = myFleet.size();
+    	int numOfEnemyShips = enemyFleet.size();
+        Scanner scanner = new Scanner(System.in);
 
-		Scanner scanner = new Scanner(System.in);
+        console.print("\033[2J\033[;H");
+        console.println("                  __");
+        console.println("                 /  \\");
+        console.println("           .-.  |    |");
+        console.println("   *    _.-'  \\  \\__/");
+        console.println("    \\.-'       \\");
+        console.println("   /          _/");
+        console.println("  |      _  /\" \"");
+        console.println("  |     /_\'");
+        console.println("   \\    \\_/");
+        console.println("    \" \"\" \"\" \"\" \"");
 
-		console.print("\033[2J\033[;H");
-		console.println("                  __");
-		console.println("                 /  \\");
-		console.println("           .-.  |    |");
-		console.println("   *    _.-'  \\  \\__/");
-		console.println("    \\.-'       \\");
-		console.println("   /          _/");
-		console.println("  |      _  /\" \"");
-		console.println("  |     /_\'");
-		console.println("   \\    \\_/");
-		console.println("    \" \"\" \"\" \"\" \"");
-
-		do {
-			/* PLAYER TURN */
+        do {
+            /*PLAYER TURN*/
 			System.out.println(ANSI_GREEN + "Remaining Player Fleet" + ANSI_RESET);
 			for (Ship ship : myFleet) {
 				System.out.print(ANSI_GREEN + ship.getName() + " || " + ANSI_RESET);
@@ -84,170 +83,175 @@ public class Main {
 			}
 			System.out.println(" ");
 			System.out.println(" ");
+	
+            console.println("");
+            console.println("Player, it's your turn");
+            console.println("Enter coordinates for your shot :");
+            Position position = parsePosition(scanner.next());
 
-			console.println("");
-			console.println("Player, it's your turn");
-			console.println("Enter coordinates for your shot :");
-			Position position = parsePosition(scanner.next());
+            HitStatus hitStatus = GameController.checkIsHit(enemyFleet, position);
+            if (hitStatus.isHit()) {
+            	numOfEnemyShips--;
 
-			HitStatus hitStatus = GameController.checkIsHit(enemyFleet, position);
-			if (hitStatus.isHit()) {
-				numOfEnemyShips--;
+                beep();
 
-				beep();
+                console.println("                \\         .  ./");
+                console.println("              \\      .:\" \";'.:..\" \"   /");
+                console.println("                  (M^^.^~~:.'\" \").");
+                console.println("            -   (/  .    . . \\ \\)  -");
+                console.println("               ((| :. ~ ^  :. .|))");
+                console.println("            -   (\\- |  \\ /  |  /)  -");
+                console.println("                 -\\  \\     /  /-");
+                console.println("                   \\  \\   /  /");
+            }
 
-				console.println("                \\         .  ./");
-				console.println("              \\      .:\" \";'.:..\" \"   /");
-				console.println("                  (M^^.^~~:.'\" \").");
-				console.println("            -   (/  .    . . \\ \\)  -");
-				console.println("               ((| :. ~ ^  :. .|))");
-				console.println("            -   (\\- |  \\ /  |  /)  -");
-				console.println("                 -\\  \\     /  /-");
-				console.println("                   \\  \\   /  /");
-			}
+           console.println(hitStatus.getDesc());
 
-			console.println(hitStatus.getDesc());
+            /*COMPUTER TURN*/
+            if (hitStatus.isTurnEnd()) {
+                position = getRandomPosition();
+                hitStatus = GameController.checkIsHit(myFleet, position);
+                console.println("");
+                console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(), hitStatus.isHit() ? "hit your ship !" : "miss"));
+                if (hitStatus.isHit()) {
+                    beep();
 
-			/* COMPUTER TURN */
-			console.println("Remaining Player1 Fleet");
-			if (hitStatus.isTurnEnd()) {
+                    console.println("                \\         .  ./");
+                    console.println("              \\      .:\" \";'.:..\" \"   /");
+                    console.println("                  (M^^.^~~:.'\" \").");
+                    console.println("            -   (/  .    . . \\ \\)  -");
+                    console.println("               ((| :. ~ ^  :. .|))");
+                    console.println("            -   (\\- |  \\ /  |  /)  -");
+                    console.println("                 -\\  \\     /  /-");
+                    console.println("                   \\  \\   /  /");
 
-				position = getRandomPosition();
-				hitStatus = GameController.checkIsHit(myFleet, position);
-				console.println("");
-				console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(),
-						hitStatus.isHit() ? "hit your ship !" : "miss"));
-				if (hitStatus.isHit()) {
-					beep();
+                }
+            }  else {
+                console.println("Please try again...");
+            }
 
-					console.println("                \\         .  ./");
-					console.println("              \\      .:\" \";'.:..\" \"   /");
-					console.println("                  (M^^.^~~:.'\" \").");
-					console.println("            -   (/  .    . . \\ \\)  -");
-					console.println("               ((| :. ~ ^  :. .|))");
-					console.println("            -   (\\- |  \\ /  |  /)  -");
-					console.println("                 -\\  \\     /  /-");
-					console.println("                   \\  \\   /  /");
+            if(numOfMyShips == 0 )
+            {
+            	console.println("You lost!");
+            	break;
+            }
+            if(numOfEnemyShips == 0)
+            {
+            	console.println("You are the winner!");
+            	break;
+            }
 
-				}
-			} else {
-				console.println("Please try again...");
-			}
+        } while (true);
+    }
 
-			if (numOfMyShips == 0) {
-				console.println("You lost!");
-				break;
-			}
-			if (numOfEnemyShips == 0) {
-				console.println("You are the winner!");
-				break;
-			}
+    private static void beep() {
+        console.print("\007");
+    }
 
-		} while (true);
-	}
+    protected static Position parsePosition(String input) {
+    	
+    	Letter letter;
+    	int number = Integer.parseInt(input.substring(1));
+    	Position position = new Position();
+    	
+    	if (Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1)) && (number>=1 && number<=8)) {
+    		letter = Letter.valueOf(input.toUpperCase().substring(0, 1));
+    		number = Integer.parseInt(input.substring(1));
+    	position.setValid(true);
+    	position.setColumn(letter);
+    	position.setRow(number);
+    		 
+    	} else {
+    		position.setValid(false);
+    	}
+    	
+    	return  position;
+        
+       
+    }
 
-	private static void beep() {
-		console.print("\007");
-	}
+    private static Position getRandomPosition() {
+        int rows = 8;
+        int lines = 8;
+        Random random = new Random();
+        Letter letter = Letter.values()[random.nextInt(lines)];
+        int number = random.nextInt(rows);
+        Position position = new Position(letter, number);
+        return position;
+    }
 
-	protected static Position parsePosition(String input) {
+    private static void InitializeGame() {
+        InitializeMyFleet();
 
-		Letter letter;
-		int number = Integer.parseInt(input.substring(1));
-		Position position = new Position();
+        InitializeEnemyFleet();
+    }
 
-		if (Letter.isOnPlayingBoard(input.toUpperCase().substring(0, 1)) && (number >= 1 && number <= 8)) {
-			letter = Letter.valueOf(input.toUpperCase().substring(0, 1));
-			number = Integer.parseInt(input.substring(1));
-			position.setValid(true);
-			position.setColumn(letter);
-			position.setRow(number);
+    private static void InitializeMyFleet() {
+        Scanner scanner = new Scanner(System.in);
+        myFleet = GameController.initializeShips();
 
-		} else {
-			position.setValid(false);
-		}
+        console.println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
-		return position;
+        for (Ship ship : myFleet) {
+            console.println("");
+            console.println(String.format("Please enter the positions for the %s (size: %s)", ship.getName(), ship.getSize()));
+            for (int i = 1; i <= ship.getSize(); i++) {
+            	boolean isValidCoordinate = true;
+            	do
+            	{
+            		
+            		 console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
 
-	}
+                     String positionInput = scanner.next();
+                     Position position = parsePosition(positionInput);
+                     if (position.isValid() && ship.isValidPosition(position)) {
+                     	boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
+                         
+                         if (isOverlaped) {
+                         	console.println(String.format("Coordinate "+positionInput+" is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
+                         	
+                         }
+                         else {
+                        	 isValidCoordinate = true;
+                        	 ship.addPosition(positionInput);
+                        	 console.println(String.format("Success add Coordinate "+positionInput));
+                         }
+                     }else {
+                    	 isValidCoordinate = false;
+                     	 console.println(String.format("Coordinate "+positionInput+" is not valid, Please Insert Another Coordinate..!!"));
+                     }
+            		
+            	}while(!isValidCoordinate);
+               
+                
+            }
+        }
 
-	private static Position getRandomPosition() {
-		int rows = 8;
-		int lines = 8;
-		Random random = new Random();
-		Letter letter = Letter.values()[random.nextInt(lines)];
-		int number = random.nextInt(rows);
-		Position position = new Position(letter, number);
-		return position;
-	}
+    }
 
-	private static void InitializeGame() {
-		InitializeMyFleet();
+    private static void InitializeEnemyFleet() {
+        enemyFleet = GameController.initializeShips();
 
-		InitializeEnemyFleet();
-	}
+        enemyFleet.get(0).getPositions().add(new Position(Letter.B, 4));
+        enemyFleet.get(0).getPositions().add(new Position(Letter.B, 5));
+        enemyFleet.get(0).getPositions().add(new Position(Letter.B, 6));
+        enemyFleet.get(0).getPositions().add(new Position(Letter.B, 7));
+        enemyFleet.get(0).getPositions().add(new Position(Letter.B, 8));
 
-	private static void InitializeMyFleet() {
-		Scanner scanner = new Scanner(System.in);
-		myFleet = GameController.initializeShips();
+        enemyFleet.get(1).getPositions().add(new Position(Letter.E, 6));
+        enemyFleet.get(1).getPositions().add(new Position(Letter.E, 7));
+        enemyFleet.get(1).getPositions().add(new Position(Letter.E, 8));
+        enemyFleet.get(1).getPositions().add(new Position(Letter.E, 9));
 
-		console.println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
+        enemyFleet.get(2).getPositions().add(new Position(Letter.A, 3));
+        enemyFleet.get(2).getPositions().add(new Position(Letter.B, 3));
+        enemyFleet.get(2).getPositions().add(new Position(Letter.C, 3));
 
-		for (Ship ship : myFleet) {
-			console.println("");
-			console.println(
-					String.format("Please enter the positions for the %s (size: %s)", ship.getName(), ship.getSize()));
-			for (int i = 1; i <= ship.getSize(); i++) {
-				console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
+        enemyFleet.get(3).getPositions().add(new Position(Letter.F, 8));
+        enemyFleet.get(3).getPositions().add(new Position(Letter.G, 8));
+        enemyFleet.get(3).getPositions().add(new Position(Letter.H, 8));
 
-				String positionInput = scanner.next();
-				Position position = parsePosition(positionInput);
-				if (position.isValid()) {
-					boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
-
-					if (isOverlaped) {
-						console.println(String.format("Coordinate " + positionInput
-								+ " is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
-						i--;
-					} else {
-						ship.addPosition(positionInput);
-						console.println(String.format("Success add Coordinate " + positionInput));
-					}
-				} else {
-					console.println(String.format(
-							"Coordinate " + positionInput + " is out of Field, Please Insert Another Coordinate..!!"));
-					i--;
-
-				}
-
-			}
-		}
-
-	}
-
-	private static void InitializeEnemyFleet() {
-		enemyFleet = GameController.initializeShips();
-
-		enemyFleet.get(0).getPositions().add(new Position(Letter.B, 4));
-		enemyFleet.get(0).getPositions().add(new Position(Letter.B, 5));
-		enemyFleet.get(0).getPositions().add(new Position(Letter.B, 6));
-		enemyFleet.get(0).getPositions().add(new Position(Letter.B, 7));
-		enemyFleet.get(0).getPositions().add(new Position(Letter.B, 8));
-
-		enemyFleet.get(1).getPositions().add(new Position(Letter.E, 6));
-		enemyFleet.get(1).getPositions().add(new Position(Letter.E, 7));
-		enemyFleet.get(1).getPositions().add(new Position(Letter.E, 8));
-		enemyFleet.get(1).getPositions().add(new Position(Letter.E, 9));
-
-		enemyFleet.get(2).getPositions().add(new Position(Letter.A, 3));
-		enemyFleet.get(2).getPositions().add(new Position(Letter.B, 3));
-		enemyFleet.get(2).getPositions().add(new Position(Letter.C, 3));
-
-		enemyFleet.get(3).getPositions().add(new Position(Letter.F, 8));
-		enemyFleet.get(3).getPositions().add(new Position(Letter.G, 8));
-		enemyFleet.get(3).getPositions().add(new Position(Letter.H, 8));
-
-		enemyFleet.get(4).getPositions().add(new Position(Letter.C, 5));
-		enemyFleet.get(4).getPositions().add(new Position(Letter.C, 6));
-	}
+        enemyFleet.get(4).getPositions().add(new Position(Letter.C, 5));
+        enemyFleet.get(4).getPositions().add(new Position(Letter.C, 6));
+    }
 }
