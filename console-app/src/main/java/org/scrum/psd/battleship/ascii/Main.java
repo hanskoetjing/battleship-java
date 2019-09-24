@@ -173,26 +173,33 @@ public class Main {
             console.println("");
             console.println(String.format("Please enter the positions for the %s (size: %s)", ship.getName(), ship.getSize()));
             for (int i = 1; i <= ship.getSize(); i++) {
-                console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
+            	boolean isValidCoordinate = true;
+            	do
+            	{
+            		
+            		 console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
 
-                String positionInput = scanner.next();
-                Position position = parsePosition(positionInput);
-                if (position.isValid()) {
-                	boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
-                    
-                    if (isOverlaped) {
-                    	console.println(String.format("Coordinate "+positionInput+" is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
-                    	i--;
-                    }
-                    else {
-                    ship.addPosition(positionInput);
-                    console.println(String.format("Success add Coordinate "+positionInput));
-                    }
-                }else {
-                	console.println(String.format("Coordinate "+positionInput+" is out of Field, Please Insert Another Coordinate..!!"));
-                	i--;
-                	
-                }
+                     String positionInput = scanner.next();
+                     Position position = parsePosition(positionInput);
+                     if (position.isValid() && ship.isValidPosition(position)) {
+                     	boolean isOverlaped = GameController.checkIsOverlap(myFleet, position);
+                         
+                         if (isOverlaped) {
+                         	console.println(String.format("Coordinate "+positionInput+" is Ovelapping Another Ship, Please Insert Another Coordinate..!!"));
+                         	
+                         }
+                         else {
+                        	 isValidCoordinate = true;
+                        	 ship.addPosition(positionInput);
+                        	 console.println(String.format("Success add Coordinate "+positionInput));
+                         }
+                     }else {
+                    	 isValidCoordinate = false;
+                     	 console.println(String.format("Coordinate "+positionInput+" is not valid, Please Insert Another Coordinate..!!"));
+                     }
+            		
+            	}while(!isValidCoordinate);
+               
                 
             }
         }

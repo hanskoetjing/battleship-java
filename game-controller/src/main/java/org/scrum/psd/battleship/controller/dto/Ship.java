@@ -65,7 +65,7 @@ public class Ship {
     			Position firstPos = positions.get(0);
     			Letter col = firstPos.getColumn();
     	    	int row = firstPos.getRow();
-    			if((col.equals(pos.getColumn()) || row == pos.getRow()) && pos.getRow() - row == 1  && Letter.getNum(pos.getColumn().toString()) - Letter.getNum(col.toString()) == 1)
+    			if((col.equals(pos.getColumn()) || row == pos.getRow()) && (pos.getRow() - row == 1  || Letter.getNum(pos.getColumn().toString()) - Letter.getNum(col.toString()) == 1))
     	    	{
     	    		isTrue = true;
     	    	}
@@ -86,11 +86,12 @@ public class Ship {
     			else
     				isColOrRow = 'r';
     			
-    			if(isColOrRow == 'c' && lastPos.getColumn() == pos.getColumn())
+    			if(isColOrRow == 'c' && lastPos.getColumn() == pos.getColumn() && pos.getRow() - lastPos.getRow() == 1) 
     			{
+    				
     				isTrue = true;
     			}
-    			else if(isColOrRow == 'r' && lastPos.getRow() == pos.getRow())
+    			else if(isColOrRow == 'r' && lastPos.getRow() == pos.getRow() && Letter.getNum(pos.getColumn().toString()) - Letter.getNum(lastPos.toString()) == 1)
     			{
     				isTrue = true;
     			}
